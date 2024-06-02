@@ -1,0 +1,5 @@
+[env]
+#MISE_NODE_DEFAULT_PACKAGES_FILE = '.default-npm-packages'
+
+[tools]
+node = '21.6.2'

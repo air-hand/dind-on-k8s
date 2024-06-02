@@ -1,0 +1,10 @@
+# debug bin
+__*
+
+*.env
+
+dist/
+
+*.log
+tmp/
+*.tar.gz
