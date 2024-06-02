@@ -23,10 +23,10 @@ spec:
           - -c 
           - |
             set -x
+            chown 1000:1000 /docker-sock
 #            /sbin/modprobe tap
 #            nsenter -t 43 -n -m -U --preserve-credentials ip tuntap add name tap0 mode tap
         securityContext:
-          privileged: true
           runAsUser: 0
         volumeMounts:
         - name: docker-sock
@@ -50,72 +50,72 @@ spec:
               cpu: 200m
               memory: 2000Mi
         securityContext:
-#          privileged: true
+          privileged: true
 #          readonlyRootFilesystem: true
-          privileged: false
-          seccompProfile:
-            type: Unconfined
-          capabilities:
-            drop: []
-#              - ALL
-            add:
-              - all
-#              - AUDIT_CONTROL
-#              - AUDIT_READ
-#              - AUDIT_WRITE
-#              - BLOCK_SUSPEND
-#              - BPF
-#              - CHECKPOINT_RESTORE
-#              - CHOWN
-#              - DAC_OVERRIDE
-#              - DAC_READ_SEARCH
-#              - FOWNER
-#              - FSETID
-#              - IPC_LOCK
-#              - IPC_OWNER
-#              - KILL
-#              - LEASE
-#              - LINUX_IMMUTABLE
-#              - MAC_ADMIN
-#              - MAC_OVERRIDE
-#              - MKNOD
-#              - NET_ADMIN
-#              - NET_BIND_SERVICE
-#              - NET_BROADCAST
-#              - NET_RAW
-#              - PERFMON
-#              - SETGID
-#              - SETFCAP
-#              - SETPCAP
-#              - SETUID
-#              - SYS_ADMIN
-#              - SYS_BOOT
-#              - SYS_CHROOT
-#              - SYS_MODULE
-#              - SYS_NICE
-#              - SYS_PACCT
-#              - SYS_PTRACE
-#              - SYS_RAWIO
-#              - SYS_RESOURCE
-#              - SYS_TIME
-#              - SYS_TTY_CONFIG
-#              - SYSLOG
-#              - WAKE_ALARM
+#          privileged: false
+#          seccompProfile:
+#            type: Unconfined
+#          capabilities:
+#            drop: []
+##              - ALL
+#            add:
+#              - all
+##              - AUDIT_CONTROL
+##              - AUDIT_READ
+##              - AUDIT_WRITE
+##              - BLOCK_SUSPEND
+##              - BPF
+##              - CHECKPOINT_RESTORE
+##              - CHOWN
+##              - DAC_OVERRIDE
+##              - DAC_READ_SEARCH
+##              - FOWNER
+##              - FSETID
+##              - IPC_LOCK
+##              - IPC_OWNER
+##              - KILL
+##              - LEASE
+##              - LINUX_IMMUTABLE
+##              - MAC_ADMIN
+##              - MAC_OVERRIDE
+##              - MKNOD
+##              - NET_ADMIN
+##              - NET_BIND_SERVICE
+##              - NET_BROADCAST
+##              - NET_RAW
+##              - PERFMON
+##              - SETGID
+##              - SETFCAP
+##              - SETPCAP
+##              - SETUID
+##              - SYS_ADMIN
+##              - SYS_BOOT
+##              - SYS_CHROOT
+##              - SYS_MODULE
+##              - SYS_NICE
+##              - SYS_PACCT
+##              - SYS_PTRACE
+##              - SYS_RAWIO
+##              - SYS_RESOURCE
+##              - SYS_TIME
+##              - SYS_TTY_CONFIG
+##              - SYSLOG
+##              - WAKE_ALARM
           runAsUser: 1000
           runAsNonRoot: true
         tty: true
         env:
-          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_NET
-            value: slirp4netns
+#          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_NET
+#            value: slirp4netns
 #            value: vpnkit
 #          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_PORT_DRIVER
 #            value: slirp4netns
-          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_SLIRP4NETNS_SECCOMP
-            value: "false"
-          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS
-            value: "--debug"
-          - name: DOCKER_IPTABLES_LEGACY
-            value: "true"
+#          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_SLIRP4NETNS_SECCOMP
+#            value: "false"
+#          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS
+#            value: "--debug"
+#          - name: DOCKER_IPTABLES_LEGACY
+#            value: "true"
 #          - name: DOCKER_OPTS
 #            value: "--cgroup-parent=/kubepods.slice/kubepods-burstable-pod$(POD_UID).slice"
           - name: POD_UID
@@ -125,7 +125,6 @@ spec:
         volumeMounts:
         - name: docker-sock
           mountPath: /run/docker
-        volumeMounts:
         - name: node-lib-modules
           mountPath: /lib/modules
           readOnly: true
