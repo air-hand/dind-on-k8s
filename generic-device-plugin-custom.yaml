@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: generic-device-plugin
-  namespace: kube-system
+  namespace: default
   labels:
     app.kubernetes.io/name: generic-device-plugin
 spec:
@@ -15,6 +15,7 @@ spec:
       labels:
         app.kubernetes.io/name: generic-device-plugin
     spec:
+      terminationGracePeriodSeconds: 0
       priorityClassName: system-node-critical
       tolerations:
       - operator: "Exists"
@@ -43,6 +44,11 @@ spec:
           name: http
         securityContext:
           privileged: true
+#          capabilities:
+#            add:
+#              - all
+#            - SYS_ADMIN
+#            - NET_ADMIN
         volumeMounts:
         - name: device-plugin
           mountPath: /var/lib/kubelet/device-plugins
