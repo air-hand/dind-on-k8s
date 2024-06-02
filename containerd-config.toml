@@ -41,3 +41,5 @@ version = 2
   tolerate_missing_hugepages_controller = true
   # restrict_oom_score_adj needs to be true when running inside UserNS (rootless)
   restrict_oom_score_adj = false
+  # https://kubernetes.io/blog/2021/11/09/non-root-containers-and-devices/#see-non-root-containers-using-devices-after-the-fix
+  device_ownership_from_security_context = true
