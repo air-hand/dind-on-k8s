@@ -7,12 +7,14 @@ setup-cluster:
 	docker build -t kindest-node:custom-v1.30.0 -f Dockerfile.kind .
 	kind create cluster --config=./kind.yml
 	helm upgrade --install metrics-server metrics-server/metrics-server -f metrics-server-values.yml -n kube-system
+#	kubectl apply -f https://raw.githubusercontent.com/squat/generic-device-plugin/main/manifests/generic-device-plugin.yaml
 
 build-dind:
 	docker build -t my-dind:latest -f Dockerfile .
 	kind load docker-image my-dind:latest --name $$(yq -r '.name' ./kind.yml)
 
 setup-deployment:
+	kubectl apply -f generic-device-plugin-custom.yaml
 	kubectl delete -f dind-deployment.yml || true	
 	kubectl apply -f dind-deployment.yml
 

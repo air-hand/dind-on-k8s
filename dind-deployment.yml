@@ -49,17 +49,18 @@ spec:
           limits:
               cpu: 200m
               memory: 2000Mi
+              squat.ai/net-tun: 1
         securityContext:
 #          privileged: true
 #          readonlyRootFilesystem: true
           privileged: false
 #          seccompProfile:
 #            type: Unconfined
-#          capabilities:
-#            drop: []
-##              - ALL
-#            add:
-#              - all
+          capabilities:
+            drop: []
+#              - ALL
+            add:
+              - all
 ##              - AUDIT_CONTROL
 ##              - AUDIT_READ
 ##              - AUDIT_WRITE
@@ -105,8 +106,8 @@ spec:
           runAsNonRoot: true
         tty: true
         env:
-#          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_NET
-#            value: slirp4netns
+          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_NET
+            value: slirp4netns
 #            value: vpnkit
 #          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_PORT_DRIVER
 #            value: slirp4netns
