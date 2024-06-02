@@ -56,12 +56,12 @@ spec:
           privileged: false
 #          seccompProfile:
 #            type: Unconfined
-          capabilities:
-            drop: []
-#              - ALL
-            add:
-              - all
-##              - AUDIT_CONTROL
+#          capabilities:
+#            drop: []
+##              - ALL
+#            add:
+#              - all
+###              - AUDIT_CONTROL
 ##              - AUDIT_READ
 ##              - AUDIT_WRITE
 ##              - BLOCK_SUSPEND
