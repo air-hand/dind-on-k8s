@@ -33,3 +33,10 @@ logs:
 
 expand-image-fs:
 	docker build -o tmp/ .
+
+container-ls:
+	@docker exec -it dind-cluster-worker sh -c 'ctr -n k8s.io containers ls'
+
+container-info: CONTAINER_ID ?= 
+container-info:
+	@docker exec -it dind-cluster-worker sh -c 'ctr -n k8s.io containers info $(CONTAINER_ID)'

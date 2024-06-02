@@ -15,9 +15,9 @@ spec:
       terminationGracePeriodSeconds: 0
       initContainers:
       - name: init-dind
-        image: my-dind:latest
-        imagePullPolicy: Never
-#        image: docker:26.1-dind-rootless
+#        image: my-dind:latest
+        imagePullPolicy: IfNotPresent
+        image: docker:26.1-dind-rootless
         command:
           - sh
           - -c 
@@ -50,9 +50,9 @@ spec:
               cpu: 200m
               memory: 2000Mi
         securityContext:
-          privileged: true
+#          privileged: true
 #          readonlyRootFilesystem: true
-#          privileged: false
+          privileged: false
 #          seccompProfile:
 #            type: Unconfined
 #          capabilities:
@@ -112,8 +112,8 @@ spec:
 #            value: slirp4netns
 #          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_SLIRP4NETNS_SECCOMP
 #            value: "false"
-#          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS
-#            value: "--debug"
+          - name: DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS
+            value: "--debug"
 #          - name: DOCKER_IPTABLES_LEGACY
 #            value: "true"
 #          - name: DOCKER_OPTS
