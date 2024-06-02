@@ -4,6 +4,7 @@ setup: clean setup-cluster build-dind setup-deployment
 
 setup-cluster:
 	@echo "Setting up Kind cluster"
+	docker build -t kindest-node:custom-v1.30.0 -f Dockerfile.kind .
 	kind create cluster --config=./kind.yml
 	helm upgrade --install metrics-server metrics-server/metrics-server -f metrics-server-values.yml -n kube-system
 
