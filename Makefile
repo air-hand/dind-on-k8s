@@ -29,7 +29,7 @@ analysys:
 	docker exec -it dind-cluster-worker sh -c 'ctr -n k8s.io containers ls'
 
 login:
-	kubectl exec -it -l app=dind -c dind -- /bin/sh
+	kubectl exec -it deploy/dind-deployment -c dind -- /bin/sh
 
 logs:
 	kubectl logs -f --tail=1000 -l app=dind -c dind
@@ -43,3 +43,6 @@ container-ls:
 container-info: CONTAINER_ID ?= 
 container-info:
 	@docker exec -it dind-cluster-worker sh -c 'ctr -n k8s.io containers info $(CONTAINER_ID)'
+
+run-docker:
+	kubectl exec -it deploy/dind-deployment -c shell -- docker run -it --rm ubuntu:jammy /bin/bash

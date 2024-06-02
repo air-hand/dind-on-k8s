@@ -46,14 +46,14 @@ spec:
         volumeMounts:
         - name: device-plugin
           mountPath: /var/lib/kubelet/device-plugins
-        - name: dev
-          mountPath: /dev
+#        - name: dev
+#          mountPath: /dev
       volumes:
       - name: device-plugin
         hostPath:
           path: /var/lib/kubelet/device-plugins
-      - name: dev
-        hostPath:
-          path: /dev
+#      - name: dev
+#        hostPath:
+#          path: /dev
   updateStrategy:
     type: RollingUpdate

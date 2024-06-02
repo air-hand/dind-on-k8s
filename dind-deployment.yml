@@ -15,7 +15,6 @@ spec:
       terminationGracePeriodSeconds: 0
       initContainers:
       - name: init-dind
-#        image: my-dind:latest
         imagePullPolicy: IfNotPresent
         image: docker:26.1-dind-rootless
         command:
@@ -24,8 +23,6 @@ spec:
           - |
             set -x
             chown 1000:1000 /docker-sock
-#            /sbin/modprobe tap
-#            nsenter -t 43 -n -m -U --preserve-credentials ip tuntap add name tap0 mode tap
         securityContext:
           runAsUser: 0
         volumeMounts:
@@ -33,15 +30,11 @@ spec:
           mountPath: /docker-sock
       containers:
       - name: dind
-#        image: docker:26.1-dind
-#        image: docker:26.1-dind-rootless
-        # kind load docker-image my-dind:latest --name dind-cluster でloadが必要
         image: my-dind:latest
         imagePullPolicy: Never
         args:
           - dockerd
           - --host=unix:///run/docker/docker.sock
-#          - --host=unix:///run/user/1000/docker.sock
         resources:
           requests:
               cpu: 200m
@@ -51,57 +44,7 @@ spec:
               memory: 2000Mi
               squat.ai/net-tun: 1
         securityContext:
-#          privileged: true
-#          readonlyRootFilesystem: true
           privileged: false
-#          seccompProfile:
-#            type: Unconfined
-#          capabilities:
-#            drop: []
-##              - ALL
-#            add:
-#              - all
-###              - AUDIT_CONTROL
-##              - AUDIT_READ
-##              - AUDIT_WRITE
-##              - BLOCK_SUSPEND
-##              - BPF
-##              - CHECKPOINT_RESTORE
-##              - CHOWN
-##              - DAC_OVERRIDE
-##              - DAC_READ_SEARCH
-##              - FOWNER
-##              - FSETID
-##              - IPC_LOCK
-##              - IPC_OWNER
-##              - KILL
-##              - LEASE
-##              - LINUX_IMMUTABLE
-##              - MAC_ADMIN
-##              - MAC_OVERRIDE
-##              - MKNOD
-##              - NET_ADMIN
-##              - NET_BIND_SERVICE
-##              - NET_BROADCAST
-##              - NET_RAW
-##              - PERFMON
-##              - SETGID
-##              - SETFCAP
-##              - SETPCAP
-##              - SETUID
-##              - SYS_ADMIN
-##              - SYS_BOOT
-##              - SYS_CHROOT
-##              - SYS_MODULE
-##              - SYS_NICE
-##              - SYS_PACCT
-##              - SYS_PTRACE
-##              - SYS_RAWIO
-##              - SYS_RESOURCE
-##              - SYS_TIME
-##              - SYS_TTY_CONFIG
-##              - SYSLOG
-##              - WAKE_ALARM
           runAsUser: 1000
           runAsNonRoot: true
         tty: true
@@ -115,6 +58,8 @@ spec:
 #            value: "false"
           - name: DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS
             value: "--debug"
+          - name: DOCKER_ALLOW_IPV6_ON_IPV4_INTERFACE
+            value: "1"
 #          - name: DOCKER_IPTABLES_LEGACY
 #            value: "true"
 #          - name: DOCKER_OPTS
@@ -126,11 +71,6 @@ spec:
         volumeMounts:
         - name: docker-sock
           mountPath: /run/docker
-        - name: node-lib-modules
-          mountPath: /lib/modules
-          readOnly: true
-#        - name: node-root
-#          mountPath: /node-root
       - name: shell
         image: docker:26.1-cli
         command:
@@ -153,19 +93,3 @@ spec:
       volumes:
       - name: docker-sock
         emptyDir: {}
-      - name: node-root
-        hostPath:
-          path: /
-          type: Directory
-      - name: node-lib-modules
-        hostPath:
-          path: /lib/modules
-#          path: /lib/modules/5.15.146.1-microsoft-standard-WSL2
-          type: Directory
-
-
-#dockerd(rootful) 0
-#  \_ container1 --user 0 == host UID 0
-#
-#dockerd(rootless) 1000
-#  \_ container1 --user 0 == host UID 1000
